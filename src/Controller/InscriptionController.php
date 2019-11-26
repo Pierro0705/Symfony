@@ -13,6 +13,7 @@ use App\Entity\Client;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 
+
 class InscriptionController extends AbstractController
 {
     /**
@@ -59,14 +60,38 @@ class InscriptionController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid())
         {
-            $manager->persist($client);
-            $manager->flush();
+            $mdp = $client->getMdp();
 
-            return $this ->redirectToRoute('accueil');
+            $mail = $client->getMail();
+
+            $repo = $this->getDoctrine()->getRepository(Client::class);
+
+            $res = $repo->findOneBy(['mail' => $mail]);
+
+            if ($res)
+            {
+                return $this ->render('inscription/index.html.twig', [
+                    'formClient' => $form->createView(),
+                    'erreur' => 'Adresse mail déja utilisée'
+                ]);
+            }
+            else
+            {  
+                $mdpCrypte = sha1($mdp);
+
+                $client->setMdp($mdpCrypte);
+
+                $manager->persist($client);
+                $manager->flush();
+
+                return $this ->redirectToRoute('connexion');
+            }
+            
         }
 
         return $this->render('inscription/index.html.twig', [
-            'formClient' => $form->createView()
+            'formClient' => $form->createView(),
+            'erreur' => ''
         ]);
     }
 }

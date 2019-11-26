@@ -19,6 +19,24 @@ class ClientRepository extends ServiceEntityRepository
         parent::__construct($registry, Client::class);
     }
 
+    /**
+     * @return Client[]
+     */
+    public function verifCompte($mail,$mdp): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT count(c.mail)
+            FROM App\Entity\Client c
+            WHERE c.mail = :mail
+            AND c.mdp = :mdp'
+        )->setParameters(array('mail' => $mail, 'mdp' => $mdp));
+
+        // returns an array of Product objects
+        return $query->getResult();
+    }
+
     // /**
     //  * @return Client[] Returns an array of Client objects
     //  */
@@ -47,4 +65,6 @@ class ClientRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    
 }
