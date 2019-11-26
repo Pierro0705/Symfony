@@ -1,20 +1,55 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Hello InscriptionController!{% endblock %}
-
+{% block title %}Inscription{% endblock %}
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <!-- ##### Breadcumb Area Start ##### -->
+    <section class="breadcumb-area bg-img" style="background-image: url(img/bg-img/hero1.jpg);">
+        <div class="container h-100">
+            <div class="row h-100 align-items-center">
+                <div class="col-12">
+                    <div class="breadcumb-content">
+                        <h3 class="breadcumb-title">Inscription</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ##### Breadcumb Area End ##### -->
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <section class="south-contact-area section-padding-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="contact-heading">
+                        <center><h6 style="font-size: 25px;">Créez votre compte</h6></center>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <!-- Contact Form Area -->
+                <div class="col-12 col-lg-8" style="margin: 0 auto; width: 80%; ">
+                    <div class="contact-form">
+                        {{ form_start(formClient) }}
+                            <div class="form-group">
+                                {{ form_widget(formClient.mail) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_widget(formClient.nom) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_widget(formClient.prenom) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_widget(formClient.mdp) }}
+                            </div>
+                            <div class="form-group">
+                                <center>{{ form_widget(formClient.valider) }}</center>
+                            </div>
+                        {{ form_end(formClient) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Users/Pierre/Documents/LocaImmo/src/Controller/InscriptionController.php'|file_link(0) }}">src/Controller/InscriptionController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Users/Pierre/Documents/LocaImmo/templates/inscription/index.html.twig'|file_link(0) }}">templates/inscription/index.html.twig</a></code></li>
-    </ul>
-</div>
 {% endblock %}
+
