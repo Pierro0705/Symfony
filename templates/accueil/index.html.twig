@@ -3,6 +3,7 @@
 {% block title %}Accueil{% endblock %}
 
 {% block body %}
+
 <!-- ##### Hero Area Start ##### -->
     <section class="hero-area">
             <!-- Single Hero Slide -->
@@ -11,7 +12,11 @@
                     <div class="row h-100 align-items-center">
                         <div class="col-12">
                             <div class="hero-slides-content">
-                                <h2>Trouvez la location de vos rêves</h2>
+                                <h2>Trouvez la location de vos rêves</h2><br>
+                                {% if not mail %}
+                                <h2 class="wow fadeInUp" data-wow-delay="300ms" style="font-size: 16px;">Commencez par vous créer un compte</h2> <br>
+                                <a href="{{ path('inscription') }}" class="btn south-btn mt-50 wow fadeInUp" data-wow-delay="500ms">Inscription</a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -503,4 +508,5 @@
         </div>
     </section>
     <!-- ##### Featured Properties Area End ##### -->
+
 {% endblock %}

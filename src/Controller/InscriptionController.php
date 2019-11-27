@@ -10,12 +10,18 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use App\Entity\Client;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 
 class InscriptionController extends AbstractController
 {
+    public function __construct(SessionInterface $session)
+    {
+        $this->session = $session;
+    }
+
     /**
      * @Route("/inscription", name="inscription")
      */
@@ -88,10 +94,19 @@ class InscriptionController extends AbstractController
             }
             
         }
-
-        return $this->render('inscription/index.html.twig', [
-            'formClient' => $form->createView(),
-            'erreur' => ''
-        ]);
+        
+        $maSession = $this->session->get('mail');
+        if ($maSession != '')
+        {
+            return $this ->redirectToRoute('accueil');
+        }
+        else
+        {
+            return $this->render('inscription/index.html.twig', [
+                'formClient' => $form->createView(),
+                'erreur' => '',
+                'mail' => ''
+            ]);
+        }
     }
 }
