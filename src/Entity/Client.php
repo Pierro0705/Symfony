@@ -24,14 +24,14 @@ class Client
     /**
      * @var string|null
      *
-     * @ORM\Column(name="nom", type="string", length=20, nullable=true)
+     * @ORM\Column(name="nom", type="string", length=255, nullable=true)
      */
     private $nom;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="prenom", type="string", length=20, nullable=true)
+     * @ORM\Column(name="prenom", type="string", length=255, nullable=true)
      */
     private $prenom;
 

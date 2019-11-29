@@ -5,21 +5,21 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * TypeProprietaire
+ * Typeproprietaire
  *
- * @ORM\Table(name="type_proprietaire")
- * @ORM\Entity(repositoryClass="App\Repository\TypeProprietaireRepository")
+ * @ORM\Table(name="typeproprietaire")
+ * @ORM\Entity(repositoryClass="App\Repository\TypeproprietaireRepository")
  */
-class TypeProprietaire
+class Typeproprietaire
 {
     /**
      * @var int
      *
-     * @ORM\Column(name="codeT_P", type="integer", nullable=false)
+     * @ORM\Column(name="codeTypeProprietaire", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $codetP;
+    private $codetypeproprietaire;
 
     /**
      * @var string|null
@@ -28,9 +28,9 @@ class TypeProprietaire
      */
     private $libelle;
 
-    public function getCodetP(): ?int
+    public function getCodetypeproprietaire(): ?int
     {
-        return $this->codetP;
+        return $this->codetypeproprietaire;
     }
 
     public function getLibelle(): ?string

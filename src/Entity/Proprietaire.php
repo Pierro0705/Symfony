@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Proprietaire
  *
- * @ORM\Table(name="proprietaire", indexes={@ORM\Index(name="codeT_P", columns={"codeT_P"})})
+ * @ORM\Table(name="proprietaire", indexes={@ORM\Index(name="fk_proprietaire_typeProprietaire", columns={"codeTypeProprietaire"})})
  * @ORM\Entity(repositoryClass="App\Repository\ProprietaireRepository")
  */
 class Proprietaire
@@ -22,16 +22,23 @@ class Proprietaire
     private $idproprietaire;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="codeTypeProprietaire", type="integer", nullable=false)
+     */
+    private $codetypeproprietaire;
+
+    /**
      * @var string|null
      *
-     * @ORM\Column(name="nomProprietaire", type="string", length=20, nullable=true)
+     * @ORM\Column(name="nomProprietaire", type="string", length=255, nullable=true)
      */
     private $nomproprietaire;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="prenomProprietaire", type="string", length=20, nullable=true)
+     * @ORM\Column(name="prenomProprietaire", type="string", length=255, nullable=true)
      */
     private $prenomproprietaire;
 
@@ -45,20 +52,25 @@ class Proprietaire
     /**
      * @var string|null
      *
-     * @ORM\Column(name="telephoneProprietaire", type="string", length=10, nullable=true)
+     * @ORM\Column(name="mdpProprietaire", type="string", length=255, nullable=true)
      */
-    private $telephoneproprietaire;
-
-    /**
-     * @var int|null
-     *
-     * @ORM\Column(name="codeT_P", type="integer", nullable=true)
-     */
-    private $codetP;
+    private $mdpproprietaire;
 
     public function getIdproprietaire(): ?int
     {
         return $this->idproprietaire;
+    }
+
+    public function getCodetypeproprietaire(): ?int
+    {
+        return $this->codetypeproprietaire;
+    }
+
+    public function setCodetypeproprietaire(int $codetypeproprietaire): self
+    {
+        $this->codetypeproprietaire = $codetypeproprietaire;
+
+        return $this;
     }
 
     public function getNomproprietaire(): ?string
@@ -97,26 +109,14 @@ class Proprietaire
         return $this;
     }
 
-    public function getTelephoneproprietaire(): ?string
+    public function getMdpproprietaire(): ?string
     {
-        return $this->telephoneproprietaire;
+        return $this->mdpproprietaire;
     }
 
-    public function setTelephoneproprietaire(?string $telephoneproprietaire): self
+    public function setMdpproprietaire(?string $mdpproprietaire): self
     {
-        $this->telephoneproprietaire = $telephoneproprietaire;
-
-        return $this;
-    }
-
-    public function getCodetP(): ?int
-    {
-        return $this->codetP;
-    }
-
-    public function setCodetP(?int $codetP): self
-    {
-        $this->codetP = $codetP;
+        $this->mdpproprietaire = $mdpproprietaire;
 
         return $this;
     }

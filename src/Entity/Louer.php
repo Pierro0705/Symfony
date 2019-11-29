@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Louer
  *
- * @ORM\Table(name="louer", indexes={@ORM\Index(name="idBien", columns={"idBien"})})
+ * @ORM\Table(name="louer", indexes={@ORM\Index(name="fk_louer_client", columns={"id"})})
  * @ORM\Entity(repositoryClass="App\Repository\LouerRepository")
  */
 class Louer
@@ -31,18 +31,25 @@ class Louer
     private $idbien;
 
     /**
-     * @var \DateTime|null
+     * @var string|null
      *
-     * @ORM\Column(name="dateArrivee", type="date", nullable=true)
+     * @ORM\Column(name="dateArrivee", type="string", length=32, nullable=true)
      */
     private $datearrivee;
 
     /**
-     * @var \DateTime|null
+     * @var string|null
      *
-     * @ORM\Column(name="dateDepart", type="date", nullable=true)
+     * @ORM\Column(name="dateDepart", type="string", length=32, nullable=true)
      */
     private $datedepart;
+
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(name="PRIX", type="integer", nullable=true)
+     */
+    private $prix;
 
     public function getId(): ?int
     {
@@ -54,26 +61,38 @@ class Louer
         return $this->idbien;
     }
 
-    public function getDatearrivee(): ?\DateTimeInterface
+    public function getDatearrivee(): ?string
     {
         return $this->datearrivee;
     }
 
-    public function setDatearrivee(?\DateTimeInterface $datearrivee): self
+    public function setDatearrivee(?string $datearrivee): self
     {
         $this->datearrivee = $datearrivee;
 
         return $this;
     }
 
-    public function getDatedepart(): ?\DateTimeInterface
+    public function getDatedepart(): ?string
     {
         return $this->datedepart;
     }
 
-    public function setDatedepart(?\DateTimeInterface $datedepart): self
+    public function setDatedepart(?string $datedepart): self
     {
         $this->datedepart = $datedepart;
+
+        return $this;
+    }
+
+    public function getPrix(): ?int
+    {
+        return $this->prix;
+    }
+
+    public function setPrix(?int $prix): self
+    {
+        $this->prix = $prix;
 
         return $this;
     }

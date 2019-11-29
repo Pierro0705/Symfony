@@ -5,21 +5,21 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * TypeBien
+ * Typebien
  *
- * @ORM\Table(name="type_bien")
- * @ORM\Entity(repositoryClass="App\Repository\TypeBienRepository")
+ * @ORM\Table(name="typebien")
+ * @ORM\Entity(repositoryClass="App\Repository\TypebienRepository")
  */
-class TypeBien
+class Typebien
 {
     /**
      * @var int
      *
-     * @ORM\Column(name="codeT_B", type="integer", nullable=false)
+     * @ORM\Column(name="codeTypeBien", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $codetB;
+    private $codetypebien;
 
     /**
      * @var string|null
@@ -28,9 +28,9 @@ class TypeBien
      */
     private $libelle;
 
-    public function getCodetB(): ?int
+    public function getCodetypebien(): ?int
     {
-        return $this->codetB;
+        return $this->codetypebien;
     }
 
     public function getLibelle(): ?string

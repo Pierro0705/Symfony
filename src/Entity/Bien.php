@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Bien
  *
- * @ORM\Table(name="bien", indexes={@ORM\Index(name="idVille", columns={"idVille"}), @ORM\Index(name="codeT_B", columns={"codeT_B"})})
+ * @ORM\Table(name="bien", indexes={@ORM\Index(name="fk_bien_typeBien", columns={"codeTypeBien"}), @ORM\Index(name="fk_bien_ville", columns={"idVille"}), @ORM\Index(name="fk_bien_proprietaire", columns={"idProprietaire"})})
  * @ORM\Entity(repositoryClass="App\Repository\BienRepository")
  */
 class Bien
@@ -22,6 +22,27 @@ class Bien
     private $idbien;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="idVille", type="integer", nullable=false)
+     */
+    private $idville;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="codeTypeBien", type="integer", nullable=false)
+     */
+    private $codetypebien;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="idProprietaire", type="integer", nullable=false)
+     */
+    private $idproprietaire;
+
+    /**
      * @var string|null
      *
      * @ORM\Column(name="adresseBien", type="string", length=255, nullable=true)
@@ -29,43 +50,58 @@ class Bien
     private $adressebien;
 
     /**
-     * @var string|null
+     * @var int|null
      *
-     * @ORM\Column(name="superficeBien", type="string", length=255, nullable=true)
+     * @ORM\Column(name="superficieBien", type="integer", nullable=true)
      */
-    private $superficebien;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="nbPlace", type="string", length=5, nullable=true)
-     */
-    private $nbplace;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="prix", type="string", length=5, nullable=true)
-     */
-    private $prix;
+    private $superficiebien;
 
     /**
      * @var int|null
      *
-     * @ORM\Column(name="idVille", type="integer", nullable=true)
+     * @ORM\Column(name="nbPlaces", type="integer", nullable=true)
      */
-    private $idville;
-
-    /**
-     * @var int|null
-     *
-     * @ORM\Column(name="codeT_B", type="integer", nullable=true)
-     */
-    private $codetB;
+    private $nbplaces;
 
     public function getIdbien(): ?int
     {
         return $this->idbien;
+    }
+
+    public function getIdville(): ?int
+    {
+        return $this->idville;
+    }
+
+    public function setIdville(int $idville): self
+    {
+        $this->idville = $idville;
+
+        return $this;
+    }
+
+    public function getCodetypebien(): ?int
+    {
+        return $this->codetypebien;
+    }
+
+    public function setCodetypebien(int $codetypebien): self
+    {
+        $this->codetypebien = $codetypebien;
+
+        return $this;
+    }
+
+    public function getIdproprietaire(): ?int
+    {
+        return $this->idproprietaire;
+    }
+
+    public function setIdproprietaire(int $idproprietaire): self
+    {
+        $this->idproprietaire = $idproprietaire;
+
+        return $this;
     }
 
     public function getAdressebien(): ?string
@@ -80,62 +116,26 @@ class Bien
         return $this;
     }
 
-    public function getSuperficebien(): ?string
+    public function getSuperficiebien(): ?int
     {
-        return $this->superficebien;
+        return $this->superficiebien;
     }
 
-    public function setSuperficebien(?string $superficebien): self
+    public function setSuperficiebien(?int $superficiebien): self
     {
-        $this->superficebien = $superficebien;
+        $this->superficiebien = $superficiebien;
 
         return $this;
     }
 
-    public function getNbplace(): ?string
+    public function getNbplaces(): ?int
     {
-        return $this->nbplace;
+        return $this->nbplaces;
     }
 
-    public function setNbplace(?string $nbplace): self
+    public function setNbplaces(?int $nbplaces): self
     {
-        $this->nbplace = $nbplace;
-
-        return $this;
-    }
-
-    public function getPrix(): ?string
-    {
-        return $this->prix;
-    }
-
-    public function setPrix(?string $prix): self
-    {
-        $this->prix = $prix;
-
-        return $this;
-    }
-
-    public function getIdville(): ?int
-    {
-        return $this->idville;
-    }
-
-    public function setIdville(?int $idville): self
-    {
-        $this->idville = $idville;
-
-        return $this;
-    }
-
-    public function getCodetB(): ?int
-    {
-        return $this->codetB;
-    }
-
-    public function setCodetB(?int $codetB): self
-    {
-        $this->codetB = $codetB;
+        $this->nbplaces = $nbplaces;
 
         return $this;
     }

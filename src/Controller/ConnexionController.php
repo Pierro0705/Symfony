@@ -67,9 +67,9 @@ class ConnexionController extends AbstractController
             $mail1 = $client->getMail();
 
             $comptes = $this->getDoctrine()
-                ->getRepository(Client::class)
-                ->verifCompte($mail1,$mdpCrypte);
-            
+                            ->getRepository(Client::class)
+                            ->verifCompte($mail1,$mdpCrypte);
+                        
             if ($comptes[0][1] == 1)
             {
                 $this->session->set('mail',$mail1);

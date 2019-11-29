@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\TypeProprietaire;
+use App\Entity\Typeproprietaire;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
- * @method TypeProprietaire|null find($id, $lockMode = null, $lockVersion = null)
- * @method TypeProprietaire|null findOneBy(array $criteria, array $orderBy = null)
- * @method TypeProprietaire[]    findAll()
- * @method TypeProprietaire[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Typeproprietaire|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Typeproprietaire|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Typeproprietaire[]    findAll()
+ * @method Typeproprietaire[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class TypeProprietaireRepository extends ServiceEntityRepository
+class TypeproprietaireRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, TypeProprietaire::class);
+        parent::__construct($registry, Typeproprietaire::class);
     }
 
     // /**
-    //  * @return TypeProprietaire[] Returns an array of TypeProprietaire objects
+    //  * @return Typeproprietaire[] Returns an array of Typeproprietaire objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class TypeProprietaireRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?TypeProprietaire
+    public function findOneBySomeField($value): ?Typeproprietaire
     {
         return $this->createQueryBuilder('t')
             ->andWhere('t.exampleField = :val')

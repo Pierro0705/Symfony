@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Ville
  *
- * @ORM\Table(name="ville", indexes={@ORM\Index(name="idPays", columns={"idPays"})})
+ * @ORM\Table(name="ville", indexes={@ORM\Index(name="fk_ville_pays", columns={"idPays"})})
  * @ORM\Entity(repositoryClass="App\Repository\VilleRepository")
  */
 class Ville
@@ -22,6 +22,13 @@ class Ville
     private $idville;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="idPays", type="integer", nullable=false)
+     */
+    private $idpays;
+
+    /**
      * @var string|null
      *
      * @ORM\Column(name="nomVille", type="string", length=255, nullable=true)
@@ -31,20 +38,25 @@ class Ville
     /**
      * @var string|null
      *
-     * @ORM\Column(name="codePostal", type="string", length=10, nullable=true)
+     * @ORM\Column(name="codePostal", type="string", length=32, nullable=true)
      */
     private $codepostal;
-
-    /**
-     * @var int|null
-     *
-     * @ORM\Column(name="idPays", type="integer", nullable=true)
-     */
-    private $idpays;
 
     public function getIdville(): ?int
     {
         return $this->idville;
+    }
+
+    public function getIdpays(): ?int
+    {
+        return $this->idpays;
+    }
+
+    public function setIdpays(int $idpays): self
+    {
+        $this->idpays = $idpays;
+
+        return $this;
     }
 
     public function getNomville(): ?string
@@ -67,18 +79,6 @@ class Ville
     public function setCodepostal(?string $codepostal): self
     {
         $this->codepostal = $codepostal;
-
-        return $this;
-    }
-
-    public function getIdpays(): ?int
-    {
-        return $this->idpays;
-    }
-
-    public function setIdpays(?int $idpays): self
-    {
-        $this->idpays = $idpays;
 
         return $this;
     }

@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\Client;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManager;
+use phpDocumentor\Reflection\Types\String_;
 
 /**
  * @method Client|null find($id, $lockMode = null, $lockVersion = null)
@@ -17,24 +19,6 @@ class ClientRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Client::class);
-    }
-
-    /**
-     * @return Client[]
-     */
-    public function verifCompte($mail,$mdp): array
-    {
-        $entityManager = $this->getEntityManager();
-
-        $query = $entityManager->createQuery(
-            'SELECT count(c.mail)
-            FROM App\Entity\Client c
-            WHERE c.mail = :mail
-            AND c.mdp = :mdp'
-        )->setParameters(array('mail' => $mail, 'mdp' => $mdp));
-
-        // returns an array of Product objects
-        return $query->getResult();
     }
 
     // /**
@@ -54,6 +38,23 @@ class ClientRepository extends ServiceEntityRepository
     }
     */
 
+    public function verifCompte($mail,$mdp): array
+    {
+        $em = $this->getEntityManager();
+
+        $query = $em->createQuery
+        (
+            'SELECT count(c.mail)
+            FROM App\Entity\Client c 
+            WHERE c.mail = :mail
+            AND c.mdp = :mdp'
+        )
+        ->setParameter('mail', $mail)
+        ->setParameter('mdp', $mdp);
+
+        return $query->getResult();
+    }
+
     /*
     public function findOneBySomeField($value): ?Client
     {
@@ -65,6 +66,4 @@ class ClientRepository extends ServiceEntityRepository
         ;
     }
     */
-
-    
 }
