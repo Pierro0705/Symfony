@@ -53,7 +53,7 @@ class BienRepository extends ServiceEntityRepository
         $entityManager = $this->getEntityManager();
 
         $query = $entityManager->createQuery(
-            'SELECT b.adressebien, b.superficiebien, b.prixparnuit, b.nbplaces, b.description, v.nomville, tb.libelle
+            'SELECT b.adressebien, b.superficiebien, b.prixparnuit, b.nbplaces, b.description, b.image, v.nomville, tb.libelle
             FROM App\Entity\Bien b, App\Entity\Ville v, App\Entity\Typebien tb
             WHERE b.ville IN (SELECT v.id from App\Entity\Ville ville where ville.nomville = :ville)
             AND b.typebien IN (SELECT tb.id from App\Entity\Typebien typebien where typebien.libelle = :typeBien)
@@ -64,6 +64,23 @@ class BienRepository extends ServiceEntityRepository
          ->setParameter('superficieMax', $superficieMax)
          ->setParameter('ville', $ville)
          ->setParameter('typeBien', $typeBien);
+
+        return $query->getResult();
+    }
+
+    public function bienRandom(): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            "SELECT b.adressebien, b.superficiebien, b.prixparnuit, b.nbplaces, b.description, b.image, v.nomville, tb.libelle
+            FROM App\Entity\Bien b, App\Entity\Ville v, App\Entity\Typebien tb
+            WHERE b.ville IN (SELECT v.id from App\Entity\Ville ville where ville.nomville = 'Paris')
+            AND b.typebien IN (SELECT tb.id from App\Entity\Typebien typebien where typebien.libelle = 'Appartement')
+            AND b.nbplaces >= 3
+            AND b.superficiebien BETWEEN 10 AND 200
+            ORDER BY Rand()"
+            )->setMaxResults(6);
 
         return $query->getResult();
     }

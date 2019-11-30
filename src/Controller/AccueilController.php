@@ -73,23 +73,33 @@ class AccueilController extends AbstractController
 
         $form->handleRequest($request);
 
+        $repository = $this->getDoctrine()->getRepository(Bien::class);
+
         if($form->isSubmitted() && $form->isValid())
         {
             $data = $form->getData();
 
-            $repository = $this->getDoctrine()->getRepository(Bien::class);
-
             $resultats = $repository->rechercheBien($data['ville'],$data['nbPlaces'],$data['superficieMin'],$data['superficieMax'],$data['typeBien']);
 
-            return $this->render('bien/index.html.twig', [
-                'mail' => $maSession,
-                'biens' => $resultats
-            ]);
+            if ($maSession == "")
+            {
+                return $this ->redirectToRoute('connexion');
+            }
+            else
+            {
+                return $this->render('bien/index.html.twig', [
+                    'mail' => $maSession,
+                    'biens' => $resultats
+                ]);
+            }
         }
-    
+
+        $random = $repository->bienRandom();
+
         return $this->render('accueil/index.html.twig', [
             'mail' => $maSession,
-            'formRecherche' => $form->createView()
+            'formRecherche' => $form->createView(),
+            'biensRandom' => $random
         ]);
     }
 

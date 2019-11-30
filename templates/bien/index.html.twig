@@ -26,13 +26,15 @@
                         <h2>Oups...</h2>
                     </div>
                 </div>
-
+                <div class="col-12">
+                    <img src="https://3.bp.blogspot.com/-pNfcKGgKbbU/WYOfR8Z7k5I/AAAAAAAAZj4/ExT2TvaLuZs1sKLxHLn_0o7mPnbjibN5gCLcBGAs/s1600/giphy.gif" alt="">
+                </div>
+                
                 <!-- Single Service Area -->
                 <div class="col-12 col-md-6 col-lg-4">
                     <div class="single-service-area mb-100">
                         <div class="service-content">
                             <h5> On dirait que votre recherche n'a donné aucun résultat !</h5>
-
                         </div>
                     </div>
                 </div>
@@ -52,7 +54,7 @@
                     <div class="single-featured-property mb-50">
                         <!-- Property Thumbnail -->
                         <div class="property-thumb">
-                            <img src="img/bg-img/feature1.jpg" alt="">
+                            <img src="{{ bien.image }}" alt="">
 
 
                             <div class="list-price">
@@ -66,19 +68,7 @@
                             <p>{{ bien.description }}</p>
                             <div class="property-meta-data d-flex align-items-end justify-content-between">
                                 <div class="new-tag">
-                                    <img src="img/icons/new.png" alt="">
-                                </div>
-                                <div class="bathroom">
-                                    <img src="img/icons/bathtub.png" alt="">
-                                    <span>2</span>
-                                </div>
-                                <div class="garage">
-                                    <img src="img/icons/garage.png" alt="">
-                                    <span>2</span>
-                                </div>
-                                <div class="space">
-                                    <img src="img/icons/space.png" alt="">
-                                    <span>{{ bien.superficiebien }} m²</span>
+                                    <span>{{ bien.nbplaces }} personnes max</span>
                                 </div>
                             </div>
                         </div>
