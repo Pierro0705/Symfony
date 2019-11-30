@@ -2,12 +2,14 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Proprietaire
  *
- * @ORM\Table(name="proprietaire", indexes={@ORM\Index(name="fk_proprietaire_typeProprietaire", columns={"codeTypeProprietaire"})})
+ * @ORM\Table(name="proprietaire")
  * @ORM\Entity(repositoryClass="App\Repository\ProprietaireRepository")
  */
 class Proprietaire
@@ -15,18 +17,11 @@ class Proprietaire
     /**
      * @var int
      *
-     * @ORM\Column(name="idProprietaire", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $idproprietaire;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="codeTypeProprietaire", type="integer", nullable=false)
-     */
-    private $codetypeproprietaire;
+    private $id;
 
     /**
      * @var string|null
@@ -56,21 +51,68 @@ class Proprietaire
      */
     private $mdpproprietaire;
 
-    public function getIdproprietaire(): ?int
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Bien", mappedBy="proprietaire")
+     */
+    private $biens;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Typeproprietaire", inversedBy="proprietaires")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $typeproprietaire;
+
+    public function __construct()
     {
-        return $this->idproprietaire;
+        $this->biens = new ArrayCollection();
     }
 
-    public function getCodetypeproprietaire(): ?int
+    /**
+     * @return Collection|Bien[]
+     */
+    public function getBiens(): Collection
     {
-        return $this->codetypeproprietaire;
+        return $this->biens;
     }
 
-    public function setCodetypeproprietaire(int $codetypeproprietaire): self
+    public function addBien(Bien $bien): self
     {
-        $this->codetypeproprietaire = $codetypeproprietaire;
+        if (!$this->biens->contains($bien)) {
+            $this->biens[] = $bien;
+            $bien->setProprietaire($this);
+        }
 
         return $this;
+    }
+
+    public function removeBien(Bien $bien): self
+    {
+        if ($this->biens->contains($bien)) {
+            $this->biens->removeElement($bien);
+            // set the owning side to null (unless already changed)
+            if ($bien->getProprietaire() === $this) {
+                $bien->setProprietaire(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getTypeproprietaire(): ?Typeproprietaire
+    {
+        return $this->typeproprietaire;
+    }
+
+    public function setTypeproprietaire(?Typeproprietaire $typeproprietaire): self
+    {
+        $this->typeproprietaire = $typeproprietaire;
+
+        return $this;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 
     public function getNomproprietaire(): ?string

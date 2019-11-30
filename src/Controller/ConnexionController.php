@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -66,22 +65,34 @@ class ConnexionController extends AbstractController
             $mdpCrypte = sha1($mdp1);
             $mail1 = $client->getMail();
 
-            $comptes = $this->getDoctrine()
-                            ->getRepository(Client::class)
-                            ->verifCompte($mail1,$mdpCrypte);
-                        
-            if ($comptes[0][1] == 1)
-            {
-                $this->session->set('mail',$mail1);
-                return $this ->redirectToRoute('accueil');
-            }
-            else if ($comptes[0][1] == 0)
-            {
-                return $this ->render('connexion/index.html.twig', [
-                    'formConnect' => $form->createView(),
-                    'mail' => '',
-                    'erreur' => 'Adresse mail ou mot de passe incorrect'
-                ]);
+            $sql = "SELECT count(c.mail)
+                    FROM client c 
+                    WHERE c.mail = :mail
+                    AND c.mdp = :mdp";
+
+            $em = $this->getDoctrine()->getManager();
+
+            $stmt = $em->getConnection()->prepare($sql);
+            $stmt->bindParam(':mail', $mail1);
+            $stmt->bindParam(':mdp', $mdpCrypte);
+            $stmt->execute();
+            $comptes = $stmt->fetchAll();
+
+            foreach ($comptes as $res)
+            {       
+                if ($res['count(c.mail)'] == 1)
+                {
+                    $this->session->set('mail',$mail1);
+                    return $this ->redirectToRoute('accueil');
+                }
+                else if ($res['count(c.mail)'] == 0)
+                {
+                    return $this ->render('connexion/index.html.twig', [
+                        'formConnect' => $form->createView(),
+                        'mail' => '',
+                        'erreur' => 'Adresse mail ou mot de passe incorrect'
+                    ]);
+                }
             }
         }
 

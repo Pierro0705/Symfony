@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -48,6 +50,47 @@ class Client
      * @ORM\Column(name="mdp", type="string", length=255, nullable=true)
      */
     private $mdp;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Louer", mappedBy="client")
+     */
+    private $louers;
+
+    public function __construct()
+    {
+        $this->louers = new ArrayCollection();
+    }
+
+    /**
+     * @return Collection|Louer[]
+     */
+    public function getLouers(): Collection
+    {
+        return $this->louers;
+    }
+
+    public function addLouer(Louer $louer): self
+    {
+        if (!$this->louers->contains($louer)) {
+            $this->louers[] = $louer;
+            $louer->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLouer(Louer $louer): self
+    {
+        if ($this->louers->contains($louer)) {
+            $this->louers->removeElement($louer);
+            // set the owning side to null (unless already changed)
+            if ($louer->getClient() === $this) {
+                $louer->setClient(null);
+            }
+        }
+
+        return $this;
+    }
 
     public function getId(): ?int
     {

@@ -2,12 +2,14 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Bien
  *
- * @ORM\Table(name="bien", indexes={@ORM\Index(name="fk_bien_typeBien", columns={"codeTypeBien"}), @ORM\Index(name="fk_bien_ville", columns={"idVille"}), @ORM\Index(name="fk_bien_proprietaire", columns={"idProprietaire"})})
+ * @ORM\Table(name="bien")
  * @ORM\Entity(repositoryClass="App\Repository\BienRepository")
  */
 class Bien
@@ -15,32 +17,11 @@ class Bien
     /**
      * @var int
      *
-     * @ORM\Column(name="idBien", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $idbien;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="idVille", type="integer", nullable=false)
-     */
-    private $idville;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="codeTypeBien", type="integer", nullable=false)
-     */
-    private $codetypebien;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="idProprietaire", type="integer", nullable=false)
-     */
-    private $idproprietaire;
+    private $id;
 
     /**
      * @var string|null
@@ -63,45 +44,104 @@ class Bien
      */
     private $nbplaces;
 
-    public function getIdbien(): ?int
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Ville", inversedBy="biens")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $ville;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Proprietaire", inversedBy="biens")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $proprietaire;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Typebien", inversedBy="biens")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $typebien;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Louer", mappedBy="bien")
+     */
+    private $louers;
+
+    public function __construct()
     {
-        return $this->idbien;
+        $this->louers = new ArrayCollection();
     }
 
-    public function getIdville(): ?int
+    public function getVille(): ?Ville
     {
-        return $this->idville;
+        return $this->ville;
     }
 
-    public function setIdville(int $idville): self
+    public function setVille(?Ville $ville): self
     {
-        $this->idville = $idville;
+        $this->ville = $ville;
 
         return $this;
     }
 
-    public function getCodetypebien(): ?int
+    public function getProprietaire(): ?Proprietaire
     {
-        return $this->codetypebien;
+        return $this->proprietaire;
     }
 
-    public function setCodetypebien(int $codetypebien): self
+    public function setProprietaire(?Proprietaire $proprietaire): self
     {
-        $this->codetypebien = $codetypebien;
+        $this->proprietaire = $proprietaire;
 
         return $this;
     }
 
-    public function getIdproprietaire(): ?int
+    public function getTypebien(): ?Typebien
     {
-        return $this->idproprietaire;
+        return $this->typebien;
     }
 
-    public function setIdproprietaire(int $idproprietaire): self
+    public function setTypebien(?Typebien $typebien): self
     {
-        $this->idproprietaire = $idproprietaire;
+        $this->typebien = $typebien;
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Louer[]
+     */
+    public function getLouers(): Collection
+    {
+        return $this->louers;
+    }
+
+    public function addLouer(Louer $louer): self
+    {
+        if (!$this->louers->contains($louer)) {
+            $this->louers[] = $louer;
+            $louer->setBien($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLouer(Louer $louer): self
+    {
+        if ($this->louers->contains($louer)) {
+            $this->louers->removeElement($louer);
+            // set the owning side to null (unless already changed)
+            if ($louer->getBien() === $this) {
+                $louer->setBien(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 
     public function getAdressebien(): ?string

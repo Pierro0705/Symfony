@@ -6,6 +6,12 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
+use App\Entity\Bien;
+
+use Doctrine\ORM\EntityManagerInterface;
+
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class AccueilController extends AbstractController
 {
@@ -17,7 +23,7 @@ class AccueilController extends AbstractController
     /**
      * @Route("/", name="accueil")
      */
-    public function index(Request $request)
+    public function index(Request $request, EntityManagerInterface $manager)
     {
 
         $maSession = $this->session->get('mail');

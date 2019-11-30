@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -15,11 +17,11 @@ class Typeproprietaire
     /**
      * @var int
      *
-     * @ORM\Column(name="codeTypeProprietaire", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $codetypeproprietaire;
+    private $id;
 
     /**
      * @var string|null
@@ -28,9 +30,50 @@ class Typeproprietaire
      */
     private $libelle;
 
-    public function getCodetypeproprietaire(): ?int
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Proprietaire", mappedBy="typeproprietaire")
+     */
+    private $proprietaires;
+
+    public function __construct()
     {
-        return $this->codetypeproprietaire;
+        $this->proprietaires = new ArrayCollection();
+    }
+
+    /**
+     * @return Collection|Proprietaire[]
+     */
+    public function getProprietaires(): Collection
+    {
+        return $this->proprietaires;
+    }
+
+    public function addProprietaire(Proprietaire $proprietaire): self
+    {
+        if (!$this->proprietaires->contains($proprietaire)) {
+            $this->proprietaires[] = $proprietaire;
+            $proprietaire->setTypeproprietaire($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProprietaire(Proprietaire $proprietaire): self
+    {
+        if ($this->proprietaires->contains($proprietaire)) {
+            $this->proprietaires->removeElement($proprietaire);
+            // set the owning side to null (unless already changed)
+            if ($proprietaire->getTypeproprietaire() === $this) {
+                $proprietaire->setTypeproprietaire(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 
     public function getLibelle(): ?string

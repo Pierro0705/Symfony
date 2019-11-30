@@ -12,7 +12,6 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use App\Entity\Client;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Response;
 
 
 class InscriptionController extends AbstractController

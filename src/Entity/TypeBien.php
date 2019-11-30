@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -15,11 +17,11 @@ class Typebien
     /**
      * @var int
      *
-     * @ORM\Column(name="codeTypeBien", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $codetypebien;
+    private $id;
 
     /**
      * @var string|null
@@ -28,9 +30,50 @@ class Typebien
      */
     private $libelle;
 
-    public function getCodetypebien(): ?int
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Bien", mappedBy="typebien")
+     */
+    private $biens;
+
+    public function __construct()
     {
-        return $this->codetypebien;
+        $this->biens = new ArrayCollection();
+    }
+
+    /**
+     * @return Collection|Bien[]
+     */
+    public function getBiens(): Collection
+    {
+        return $this->biens;
+    }
+
+    public function addBien(Bien $bien): self
+    {
+        if (!$this->biens->contains($bien)) {
+            $this->biens[] = $bien;
+            $bien->setTypebien($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBien(Bien $bien): self
+    {
+        if ($this->biens->contains($bien)) {
+            $this->biens->removeElement($bien);
+            // set the owning side to null (unless already changed)
+            if ($bien->getTypebien() === $this) {
+                $bien->setTypebien(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 
     public function getLibelle(): ?string

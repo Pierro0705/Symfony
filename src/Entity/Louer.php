@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Louer
  *
- * @ORM\Table(name="louer", indexes={@ORM\Index(name="fk_louer_client", columns={"id"})})
+ * @ORM\Table(name="louer")
  * @ORM\Entity(repositoryClass="App\Repository\LouerRepository")
  */
 class Louer
@@ -17,18 +17,9 @@ class Louer
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="idBien", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
-     */
-    private $idbien;
 
     /**
      * @var string|null
@@ -51,14 +42,45 @@ class Louer
      */
     private $prix;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Client", inversedBy="louers")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $client;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Bien", inversedBy="louers")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $bien;
+
+    public function getClient(): ?Client
+    {
+        return $this->client;
+    }
+
+    public function setClient(?Client $client): self
+    {
+        $this->client = $client;
+
+        return $this;
+    }
+
+    public function getBien(): ?Bien
+    {
+        return $this->bien;
+    }
+
+    public function setBien(?Bien $bien): self
+    {
+        $this->bien = $bien;
+
+        return $this;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getIdbien(): ?int
-    {
-        return $this->idbien;
     }
 
     public function getDatearrivee(): ?string
