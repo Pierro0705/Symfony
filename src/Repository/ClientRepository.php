@@ -47,4 +47,20 @@ class ClientRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function verifClient($mail,$mdp): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT count(c.mail)
+            FROM App\Entity\Client c
+            WHERE c.mail = :mail
+            AND c.mdp = :mdp'
+        )->setParameter('mail', $mail)
+         ->setParameter('mdp', $mdp);
+
+        // returns an array of Product objects
+        return $query->getResult();
+    }
 }

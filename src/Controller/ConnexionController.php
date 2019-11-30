@@ -65,35 +65,24 @@ class ConnexionController extends AbstractController
             $mdpCrypte = sha1($mdp1);
             $mail1 = $client->getMail();
 
-            $sql = "SELECT count(c.mail)
-                    FROM client c 
-                    WHERE c.mail = :mail
-                    AND c.mdp = :mdp";
-
-            $em = $this->getDoctrine()->getManager();
-
-            $stmt = $em->getConnection()->prepare($sql);
-            $stmt->bindParam(':mail', $mail1);
-            $stmt->bindParam(':mdp', $mdpCrypte);
-            $stmt->execute();
-            $comptes = $stmt->fetchAll();
-
-            foreach ($comptes as $res)
-            {       
-                if ($res['count(c.mail)'] == 1)
-                {
-                    $this->session->set('mail',$mail1);
-                    return $this ->redirectToRoute('accueil');
-                }
-                else if ($res['count(c.mail)'] == 0)
-                {
-                    return $this ->render('connexion/index.html.twig', [
+            $repository = $this->getDoctrine()->getRepository(Client::class);
+            
+            $client = $repository->verifClient($mail1,$mdpCrypte);
+            
+            if ($client[0][1] == 1)
+            {
+                $this->session->set('mail',$mail1);
+                return $this ->redirectToRoute('accueil');
+            }
+            else if ($client[0][1] == 0)
+            {
+                return $this ->render('connexion/index.html.twig', [
                         'formConnect' => $form->createView(),
                         'mail' => '',
                         'erreur' => 'Adresse mail ou mot de passe incorrect'
                     ]);
-                }
             }
+            
         }
 
         $maSession = $this->session->get('mail');

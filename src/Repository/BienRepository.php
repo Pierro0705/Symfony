@@ -47,4 +47,24 @@ class BienRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function rechercheBien($ville,$nbPlaces,$superficieMin,$superficieMax,$typeBien): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT b.adressebien, b.superficiebien, b.prixparnuit, b.nbplaces, b.description, v.nomville, tb.libelle
+            FROM App\Entity\Bien b, App\Entity\Ville v, App\Entity\Typebien tb
+            WHERE b.ville IN (SELECT v.id from App\Entity\Ville ville where ville.nomville = :ville)
+            AND b.typebien IN (SELECT tb.id from App\Entity\Typebien typebien where typebien.libelle = :typeBien)
+            AND b.nbplaces >= :nbPlaces
+            AND b.superficiebien BETWEEN :superficieMin AND :superficieMax'
+        )->setParameter('nbPlaces', $nbPlaces)
+         ->setParameter('superficieMin', $superficieMin)
+         ->setParameter('superficieMax', $superficieMax)
+         ->setParameter('ville', $ville)
+         ->setParameter('typeBien', $typeBien);
+
+        return $query->getResult();
+    }
 }

@@ -31,7 +31,9 @@ CREATE TABLE IF NOT EXISTS bien
    id INTEGER(5) NOT NULL auto_increment ,
    adresseBien VARCHAR(255) NULL  ,
    superficieBien INTEGER(4) NULL  ,
-   nbPlaces INTEGER(2) NULL  
+   prixParNuit float(5.2) NULL ,
+   nbPlaces INTEGER(2) NULL  ,
+   description VARCHAR(255) NULL
    , PRIMARY KEY (id) 
  ) 
  comment = "";

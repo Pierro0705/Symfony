@@ -38,6 +38,13 @@ class Bien
     private $superficiebien;
 
     /**
+     * @var float|null
+     *
+     * @ORM\Column(name="prixParNuit", type="float", nullable=true)
+     */
+    private $prixparnuit;
+
+    /**
      * @var int|null
      *
      * @ORM\Column(name="nbPlaces", type="integer", nullable=true)
@@ -66,6 +73,13 @@ class Bien
      * @ORM\OneToMany(targetEntity="App\Entity\Louer", mappedBy="bien")
      */
     private $louers;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="description", type="string", length=255, nullable=true)
+     */
+    private $description;
 
     public function __construct()
     {
@@ -168,6 +182,18 @@ class Bien
         return $this;
     }
 
+    public function getPrixparnuit(): ?float
+    {
+        return $this->prixparnuit;
+    }
+
+    public function setPrixparnuit(?float $prixparnuit): self
+    {
+        $this->prixparnuit = $prixparnuit;
+
+        return $this;
+    }
+
     public function getNbplaces(): ?int
     {
         return $this->nbplaces;
@@ -176,6 +202,18 @@ class Bien
     public function setNbplaces(?int $nbplaces): self
     {
         $this->nbplaces = $nbplaces;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
 
         return $this;
     }
