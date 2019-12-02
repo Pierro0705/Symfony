@@ -153,7 +153,7 @@ class AccueilController extends AbstractController
         else
         {
             return $this->render('accueil/show.html.twig', [
-                'bien' => $bien,
+                'resultats' => $bien,
                 'mail' => $maSession
             ]);
         }

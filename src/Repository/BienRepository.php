@@ -55,9 +55,9 @@ class BienRepository extends ServiceEntityRepository
         $query = $entityManager->createQuery(
             "SELECT b.id, b.adressebien, b.superficiebien, b.prixparnuit, b.nbplaces, b.description, b.image, v.nomville, tb.libelle
             FROM App\Entity\Bien b, App\Entity\Ville v, App\Entity\Typebien tb, App\Entity\Louer l
-            WHERE b.ville IN (SELECT v.id from App\Entity\Ville ville where ville.nomville like '%".$ville."%')
-            AND b.typebien IN (SELECT tb.id from App\Entity\Typebien typebien where typebien.libelle = :typebien)
-            AND b.id IN (SELECT l.id from App\Entity\Louer l1 where (:dateArrivee < l1.datearrivee AND :dateDepart < l1.datearrivee) OR (:dateArrivee > l1.datedepart))
+            WHERE (b.ville IN (SELECT v.id from App\Entity\Ville ville where ville.nomville like '%".$ville."%')) OR (b.ville NOT IN (SELECT v.id from App\Entity\Ville))
+            AND (b.typebien IN (SELECT tb.id from App\Entity\Typebien typebien where typebien.libelle = :typebien)) OR (b.typepien NOT IN (SELECT tb.id from App\Entity\Typebien))
+            AND (b.id IN (SELECT l.id from App\Entity\Louer l1 where (:dateArrivee < l1.datearrivee AND :dateDepart < l1.datearrivee) OR (:dateArrivee > l1.datedepart))) OR (b.id NOT IN (SELECT l.id from App\Entity\Louer))
             AND b.nbplaces >= :nbPlaces
             AND b.superficiebien BETWEEN :superficieMin AND :superficieMax"
         )->setParameter('nbPlaces', $nbPlaces)
