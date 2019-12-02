@@ -52,10 +52,24 @@
                                     </div>
                                 </div>
 
-                                 <div class="col-12 col-md-4 col-lg-3">
+                                <div class="col-12 col-md-4 col-lg-3">
                                     <div class="form-group">
                                     <div class="range">Type de location :</div>
                                         {{ form_widget(formRecherche.typeBien) }}
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-4 col-lg-3">
+                                    <div class="form-group">
+                                    <div class="range">Date d'arrivée :</div>
+                                        {{ form_widget(formRecherche.dateArrivee) }}
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-4 col-lg-3">
+                                    <div class="form-group">
+                                    <div class="range">Date de départ :</div>
+                                        {{ form_widget(formRecherche.dateDepart) }}
                                     </div>
                                 </div>
 
@@ -72,15 +86,16 @@
                                         {{ form_widget(formRecherche.superficieMax) }}
                                     </div>
                                 </div>
-
-                                <div class="col-12 d-flex justify-content-between">
-                                    <!-- Submit -->
-                                    <div class="form-group mb-0">
-                                        {{ form_widget(formRecherche.valider) }} 
-                                    </div>
-                                </div>
+                            </div>
+                            <!-- Submit -->
+                            <div class="form-group mb-0">
+                                <center>{{ form_widget(formRecherche.valider) }} </center>
                             </div>
                         {{ form_end(formRecherche) }}
+                        <div class="form-group" style="color: red;">
+                            <br><br>
+                            <center>{{ erreur }}</center>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -102,29 +117,29 @@
             <div class="row">
                 {% for bienRand in biensRandom %}
                 <!-- Single Featured Property -->
-                <div class="col-12 col-md-6 col-xl-4">
-                    <div class="single-featured-property mb-50 wow fadeInUp" data-wow-delay="600ms">
-                        <!-- Property Thumbnail -->
-                        <div class="property-thumb">
-                            <img src="{{ bienRand.image }}" alt="">
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <div class="single-featured-property mb-50 wow fadeInUp" data-wow-delay="600ms">
+                            <!-- Property Thumbnail -->
+                            <div class="property-thumb">
+                                <img src="{{ bienRand.image }}" alt="">
 
-                            <div class="list-price">
-                                <p>{{ bienRand.prixparnuit }} € par nuit</p>
+                                <div class="list-price">
+                                    <p>{{ bienRand.prixparnuit }} € par nuit</p>
+                                </div>
                             </div>
-                        </div>
-                        <!-- Property Content -->
-                        <div class="property-content">
-                            <h5>{{ bienRand.libelle }} à {{ bienRand.nomville }}</h5>
-                            <p class="location"><img src="img/icons/location.png" alt="">{{ bienRand.adressebien }}</p>
-                            <p>{{ bienRand.description }}</p>
-                            <div class="property-meta-data d-flex align-items-end justify-content-between">
-                                <div class="new-tag">
-                                    <span>{{ bienRand.nbplaces }} personnes max</span>
+                            <!-- Property Content -->
+                            <div class="property-content">
+                                <h5>{{ bienRand.libelle }} à {{ bienRand.nomville }}</h5>
+                                <p class="location"><img src="img/icons/location.png" alt="">{{ bienRand.adressebien }}</p>
+                                <p>{{ bienRand.description }}</p>
+                                <div class="property-meta-data d-flex align-items-end justify-content-between">
+                                    <div class="new-tag">
+                                        <span>{{ bienRand.nbplaces }} personnes max</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
                 {% endfor %}
             </div>
         </div>

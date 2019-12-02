@@ -50,13 +50,11 @@
 
                 {% for bien in biens %}
                 <!-- Single Featured Property -->
-                <div class="col-12 col-md-6 col-xl-4">
+                <div class="col-12 col-md-6 col-xl-4" onclick="window.location='{{ path('bienDetaille', {'id': bien.id}) }}';">
                     <div class="single-featured-property mb-50">
                         <!-- Property Thumbnail -->
                         <div class="property-thumb">
                             <img src="{{ bien.image }}" alt="">
-
-
                             <div class="list-price">
                                 <p>{{ bien.prixparnuit }} € par nuit</p>
                             </div>
