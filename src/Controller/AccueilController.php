@@ -62,16 +62,16 @@ class AccueilController extends AbstractController
                     ])
                     ->add('dateArrivee' , DateType::class, [
                         'widget' => 'single_text',
+                        'input'  => 'string',
                         'attr' => [
                             'class' => 'form-control',
-                            'min' => date('Y-m-d')
                         ]
                     ])
                     ->add('dateDepart' , DateType::class,  [
                         'widget' => 'single_text',
+                        'input'  => 'string',
                         'attr' => [
                             'class' => 'form-control',
-                            'min' => date('Y-m-d', strtotime("+1 day"))
                         ]
                     ])
                     ->add('typeBien' , ChoiceType::class,  [
@@ -111,6 +111,7 @@ class AccueilController extends AbstractController
             {
                 $resultats = $repository->rechercheBien($data['ville'],$data['nbPlaces'],$data['superficieMin'],$data['superficieMax'],$data['typeBien'],$data['dateArrivee'],$data['dateDepart']);
 
+                dump($resultats);
                 if ($maSession == "")
                 {
                     return $this ->redirectToRoute('connexion');

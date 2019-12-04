@@ -54,22 +54,29 @@ class BienRepository extends ServiceEntityRepository
 
         $query = $entityManager->createQuery(
             "SELECT b.id, b.adressebien, b.superficiebien, b.prixparnuit, b.nbplaces, b.description, b.image, v.nomville, tb.libelle
-            FROM App\Entity\Bien b, App\Entity\Ville v, App\Entity\Typebien tb, App\Entity\Louer l
-            WHERE (b.ville IN (SELECT v.id from App\Entity\Ville ville where ville.nomville like '%".$ville."%')) OR (b.ville NOT IN (SELECT v.id from App\Entity\Ville))
-            AND (b.typebien IN (SELECT tb.id from App\Entity\Typebien typebien where typebien.libelle = :typebien)) OR (b.typepien NOT IN (SELECT tb.id from App\Entity\Typebien))
-            AND (b.id IN (SELECT l.id from App\Entity\Louer l1 where (:dateArrivee < l1.datearrivee AND :dateDepart < l1.datearrivee) OR (:dateArrivee > l1.datedepart))) OR (b.id NOT IN (SELECT l.id from App\Entity\Louer))
+            FROM App\Entity\Bien b
+            INNER JOIN b.ville v
+            INNER JOIN b.typebien tb
+            LEFT JOIN b.louers l
+            WHERE tb.libelle = :typebien
+            AND ((:dateArrivee < l.datearrivee AND :dateDepart < l.datearrivee)
+            OR l.id IS NULL)
             AND b.nbplaces >= :nbPlaces
-            AND b.superficiebien BETWEEN :superficieMin AND :superficieMax"
-        )->setParameter('nbPlaces', $nbPlaces)
-         ->setParameter('superficieMin', $superficieMin)
-         ->setParameter('typebien', $typeBien)
-         ->setParameter('dateArrivee', $dateArrivee)
-         ->setParameter('dateDepart', $dateDepart)
-         ->setParameter('superficieMax', $superficieMax);
+            AND b.ville = v.id
+            AND v.nomville like '%" . $ville . "%'
+            AND b.superficiebien BETWEEN :superficieMin AND :superficieMax
+    "
+        )->setParameter('typebien',$typeBien)
+         ->setParameter('dateArrivee',$dateArrivee)
+         ->setParameter('dateDepart',$dateDepart)
+         ->setParameter('nbPlaces',$nbPlaces)
+         ->setParameter('superficieMin',$superficieMin)
+         ->setParameter('superficieMax',$superficieMax);
 
+        
         return $query->getResult();
     }
-
+    
     public function bienRandom(): array
     {
         $entityManager = $this->getEntityManager();
@@ -80,7 +87,7 @@ class BienRepository extends ServiceEntityRepository
             WHERE b.ville IN (SELECT v.id from App\Entity\Ville ville where ville.nomville like '%')
             AND b.typebien IN (SELECT tb.id from App\Entity\Typebien typebien where typebien.libelle like '%')
             AND b.nbplaces >= 3
-            AND b.superficiebien BETWEEN 10 AND 200
+            AND b.superficiebien BETWEEN 10 AND 400
             ORDER BY Rand()"
             )->setMaxResults(6);
 

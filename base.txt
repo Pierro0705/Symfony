@@ -1,0 +1,13 @@
+insert into typebien values (null,"Appartement"),
+ 							  (null,"Maison");
+                              
+insert into pays values (null,"France");
+
+insert into ville values (null,1,"Paris","75017");
+ 
+insert into typeProprietaire values (null,"Particulier");
+
+insert into proprietaire values (null,1,"Jean","Jacques","jj@gmail.com","123");
+
+INSERT INTO `bien` (`id`,`ville_id`,`proprietaire_id`,`typebien_id`,`adresseBien`,`superficieBien`,`prixParNuit`,`nbPlaces`,`description`) VALUES (1,"1","1","1","3045 Eu Street",311,132,7,"ullamcorper magna. Sed eu eros. Nam consequat dolor vitae dolor. Donec fringilla. Donec feugiat metus"),(2,"1","1","1","Ap #309-8470 Hendrerit Road",330,89,5,"mi enim, condimentum eget, volutpat ornare, facilisis eget, ipsum. Donec sollicitudin adipiscing ligula. Aenean gravida"),(3,"1","1","1","773-6854 Diam Rd.",71,50,10,"purus mauris a nunc. In at pede. Cras vulputate velit eu sem. Pellentesque ut ipsum"),(4,"1","1","1","8343 At St.",364,172,9,"dis parturient montes, nascetur ridiculus mus. Donec dignissim magna a tortor. Nunc commodo auctor velit."),(5,"1","1","1","342-7255 Nunc Av.",103,182,8,"tempus non, lacinia at, iaculis quis, pede. Praesent eu dui. Cum sociis natoque penatibus et"),(6,"1","1","1","349-7182 Leo. Rd.",201,143,9,"molestie. Sed id risus quis diam luctus lobortis. Class aptent taciti sociosqu ad litora torquent"),(7,"1","1","1","424 Metus Avenue",398,120,8,"nisl. Quisque fringilla euismod enim. Etiam gravida molestie arcu. Sed eu nibh vulputate mauris sagittis"),(8,"1","1","1","502-3231 Arcu Rd.",123,89,9,"eget ipsum. Suspendisse sagittis. Nullam vitae diam. Proin dolor. Nulla semper tellus id nunc interdum"),(9,"1","1","1","Ap #476-1948 Nibh Av.",147,113,9,"ultricies ornare, elit elit fermentum risus, at fringilla purus mauris a nunc. In at pede."),(10,"1","1","1","256-6246 Tellus Avenue",228,149,10,"congue a, aliquet vel, vulputate eu, odio. Phasellus at augue id ante dictum cursus. Nunc");
+
