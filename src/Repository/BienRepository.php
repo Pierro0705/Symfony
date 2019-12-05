@@ -59,8 +59,8 @@ class BienRepository extends ServiceEntityRepository
             INNER JOIN b.typebien tb
             LEFT JOIN b.louers l
             WHERE tb.libelle = :typebien
-            AND ((:dateArrivee < l.datearrivee AND :dateDepart < l.datearrivee)
-            OR l.id IS NULL)
+            AND ((:dateArrivee < l.datearrivee AND :dateDepart < l.datearrivee) OR (:dateArrivee > l.datearrivee AND :dateDepart > l.datedepart))
+            OR l.id IS NULL
             AND b.nbplaces >= :nbPlaces
             AND b.ville = v.id
             AND v.nomville like '%" . $ville . "%'
@@ -74,6 +74,22 @@ class BienRepository extends ServiceEntityRepository
          ->setParameter('superficieMax',$superficieMax);
 
         
+        return $query->getResult();
+    }
+
+    public function findBienById($id)
+    {
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery(
+            "SELECT b.id, b.adressebien, b.superficiebien, b.prixparnuit, b.nbplaces, b.description, b.image, v.nomville, tb.libelle
+            FROM App\Entity\Bien b
+            INNER JOIN b.ville v
+            INNER JOIN b.typebien tb
+            LEFT JOIN b.louers l
+            WHERE b.id = :id
+            "
+        )->setParameter('id',$id);
+
         return $query->getResult();
     }
     

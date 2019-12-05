@@ -65,6 +65,7 @@ class AccueilController extends AbstractController
                         'input'  => 'string',
                         'attr' => [
                             'class' => 'form-control',
+                            'min' => date('Y-m-d')
                         ]
                     ])
                     ->add('dateDepart' , DateType::class,  [
@@ -72,6 +73,7 @@ class AccueilController extends AbstractController
                         'input'  => 'string',
                         'attr' => [
                             'class' => 'form-control',
+                            'min' => date('Y-m-d')
                         ]
                     ])
                     ->add('typeBien' , ChoiceType::class,  [
@@ -139,13 +141,68 @@ class AccueilController extends AbstractController
     /**
      * @Route("/biens/{id}", name="bienDetaille")
      */
-    public function descBien($id)
+    public function descBien($id, Request $request, EntityManagerInterface $manager)
     {
         $maSession = $this->session->get('mail');
 
         $repo = $this->getDoctrine()->getRepository(Bien::class);
 
-        $bien = $repo->find($id);
+        $bien = $repo->findBienById($id);
+
+        $form = $this->createFormBuilder()
+       ->add('dateArrivee' , DateType::class, [
+           'widget' => 'single_text',
+           'input'  => 'string',
+           'attr' => [
+               'class' => 'form-control',
+               'min' => date('Y-m-d')
+               
+           ]
+       ])
+       ->add('dateDepart' , DateType::class,  [
+           'widget' => 'single_text',
+           'input'  => 'string',
+           'attr' => [
+               'class' => 'form-control',
+               'min' => date('Y-m-d')
+           ]
+       ])
+       ->add('valider' , SubmitType::class,  [
+        'label' => 'Réserver',
+        'attr' => [
+            'placeholder' => 'denis',
+            'class' => 'btn south-btn'
+        ]
+    ])
+        ->getForm();
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $data = $form->getData();
+
+            if ($data['dateDepart'] < $data['dateArrivee'])
+            {
+                return $this->render('accueil/show.html.twig', [
+                    'formValider' => $form->createView(),
+                    'resultats' => $bien,
+                    'mail' => $maSession,
+                    'erreur' => 'Les dates ne sont pas cohérentes'
+                ]);
+            }
+            else
+            {
+                if ($maSession == "")
+                {
+                    return $this ->redirectToRoute('connexion');
+                }
+                else
+                {
+                    echo "debout";
+                }
+            }
+        }
 
         if ($maSession == "")
         {
@@ -154,8 +211,10 @@ class AccueilController extends AbstractController
         else
         {
             return $this->render('accueil/show.html.twig', [
+                'formValider' => $form->createView(),
                 'resultats' => $bien,
-                'mail' => $maSession
+                'mail' => $maSession,
+                'erreur' => ''
             ]);
         }
     }
