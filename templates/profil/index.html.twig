@@ -71,6 +71,7 @@
                         <th scope="col">Date d'arrivée</th>
                         <th scope="col">Date de départ</th>
                         <th scope="col">Prix payé</th>
+                        <th scope="col">Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -83,6 +84,14 @@
                         <td>{{ location.dateArrivee }}</td>
                         <td>{{ location.dateDepart }}</td>
                         <td>{{ location.prix }} €</td>
+                        {% if location.status == "En attente" %}
+                        <td style="color: #D16200;"><i class="fas fa-spinner"></i> {{ location.status }}</td>
+                        {% elseif location.status == "Confirmé" %}
+                        <td style="color: #00BD1A;"><i class="fas fa-check"></i> {{ location.status }}</td>
+                        {% elseif location.status == "Refusé" %}
+                        <td style="color: #DA0000;"><i class="fas fa-times"></i> {{ location.status }}</td>
+                        {% endif %}
+
                         </tr>
                         {% endfor %}
                     </tbody>

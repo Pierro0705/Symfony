@@ -87,6 +87,7 @@ class ProfilController extends AbstractController
             return $this->render('profil/index.html.twig', [
                 'mail' => $mail,
                 'locations' => $collection,
+                'mailPro' => '',
                 'formUpdate' => $formUpdate->createView()
             ]);
         }

@@ -107,6 +107,7 @@ class AccueilController extends AbstractController
                     'mail' => $maSession,
                     'formRecherche' => $form->createView(),
                     'biensRandom' => $random,
+                    'mailPro' => '',
                     'erreur' => 'Les dates ne sont pas cohérentes'
                 ]);
             }
@@ -124,6 +125,7 @@ class AccueilController extends AbstractController
                     return $this->render('accueil/bien.html.twig', [
                         'mail' => $maSession,
                         'biens' => $resultats,
+                        'mailPro' => '',
                         'erreur' => ''
                     ]);
                 }
@@ -134,6 +136,7 @@ class AccueilController extends AbstractController
             'mail' => $maSession,
             'formRecherche' => $form->createView(),
             'biensRandom' => $random,
+            'mailPro' => '',
             'erreur' => ''
         ]);
     }
@@ -187,6 +190,7 @@ class AccueilController extends AbstractController
                 return $this->render('accueil/show.html.twig', [
                     'formValider' => $formF->createView(),
                     'resultats' => $bien,
+                    'mailPro' => '',
                     'mail' => $maSession,
                     'erreur' => 'Les dates ne sont pas cohérentes'
                 ]);
@@ -207,6 +211,7 @@ class AccueilController extends AbstractController
                             'formValider' => $formF->createView(),
                             'resultats' => $bien,
                             'mail' => $maSession,
+                            'mailPro' => '',
                             'erreur' => 'Cette location est déja louée à ces dates, veuillez les changer'
                         ]);
                     }
@@ -225,7 +230,8 @@ class AccueilController extends AbstractController
                                  ->setClient($monClient)
                                  ->setDatearrivee($data['dateArrivee'])
                                  ->setDatedepart($data['dateDepart'])
-                                 ->setPrix($prixTotal);
+                                 ->setPrix($prixTotal)
+                                 ->setStatus("En attente");
                                  
 
                         $this->session->set('location',$location);
@@ -246,6 +252,7 @@ class AccueilController extends AbstractController
                 'formValider' => $formF->createView(),
                 'resultats' => $bien,
                 'mail' => $maSession,
+                'mailPro' => '',
                 'erreur' => ''
             ]);
         }
@@ -258,6 +265,7 @@ class AccueilController extends AbstractController
     public function deconnexion(Request $request)
     {
         $this->session->remove('mail');
+        $this->session->remove('mailPro');
 
         return $this ->redirectToRoute('accueil');
     }

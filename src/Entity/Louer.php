@@ -43,6 +43,13 @@ class Louer
     private $prix;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(name="status", type="string", length=32, nullable=true)
+     */
+    private $status;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Client", inversedBy="louers")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -115,6 +122,18 @@ class Louer
     public function setPrix(?int $prix): self
     {
         $this->prix = $prix;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?string $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }

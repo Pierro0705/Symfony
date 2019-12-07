@@ -77,6 +77,7 @@ class InscriptionController extends AbstractController
             {
                 return $this ->render('inscription/index.html.twig', [
                     'formClient' => $form->createView(),
+                    'mailPro' => '',
                     'erreur' => 'Adresse mail déja utilisée'
                 ]);
             }
@@ -104,6 +105,7 @@ class InscriptionController extends AbstractController
             return $this->render('inscription/index.html.twig', [
                 'formClient' => $form->createView(),
                 'erreur' => '',
+                'mailPro' => '',
                 'mail' => ''
             ]);
         }

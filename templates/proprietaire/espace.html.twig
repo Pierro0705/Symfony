@@ -1,0 +1,64 @@
+{% extends "base.html.twig" %}
+{% block body %}
+<!-- ##### Breadcumb Area Start ##### -->
+    <section class="breadcumb-area bg-img" style="background-image: url(/img/bg-img/loft2.jpg);">
+        <div class="container h-100">
+            <div class="row h-100 align-items-center">
+                <div class="col-12">
+                    <div class="breadcumb-content">
+                        <h3 class="breadcumb-title">Vos locations</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ##### Breadcumb Area End ##### -->
+
+    <section class="south-contact-area section-padding-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="contact-heading">
+                        <center><h6 style="font-size: 25px;">Locations en attente</h6></center>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Contact Form Area -->
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Adresse du bien</th>
+                            <th scope="col">Date d'arrivée</th>
+                            <th scope="col">Date de départ</th>
+                            <th scope="col">Prix</th>
+                            <th scope="col">Accepter / Refuser</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% set nb = 0 %}
+                    {% for location in locations %}
+                    {% set nb = nb + 1 %}
+                        <tr>
+                            <th scope="row">{{ nb }}</th>
+                            <td>{{ location.adressebien }}</td>
+                            <td>{{ location.datearrivee }}</td>
+                            <td>{{ location.datedepart }}</td>
+                            <td>{{ location.prix }} €</td>
+                            <td><button onclick="window.location='{{ path('espaceproprietaireid', {'id': location.id, 'action': 'accept'}) }}';" type="button" style="padding: 4px 20px;" class="btn btn-success">Accepter</button>&nbsp;<button onclick="window.location='{{ path('espaceproprietaireid', {'id': location.id, 'action': 'refuse'}) }}';" style="padding: 4px 20px;" type="button" class="btn btn-danger">Refuser</button></td>
+                        </tr>
+                        
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% if locations is empty %}
+            <center> Vous n'avez aucune location à vérifier </center>
+            {% endif %}
+            
+        </div>
+    </section>
+
+{% endblock %}

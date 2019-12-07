@@ -47,6 +47,7 @@ class PaiementController extends AbstractController
         return $this->render('paiement/index.html.twig', [
             'location' => $location,
             'mail' => $maSession,
+            'mailPro' => '',
             'formPaiement' => $formPaiement->createView()
         ]);
     }

@@ -79,6 +79,7 @@ class ConnexionController extends AbstractController
                 return $this ->render('connexion/index.html.twig', [
                         'formConnect' => $form->createView(),
                         'mail' => '',
+                        'mailPro' => '',
                         'erreur' => 'Adresse mail ou mot de passe incorrect'
                     ]);
             }
@@ -96,6 +97,7 @@ class ConnexionController extends AbstractController
             return $this->render('connexion/index.html.twig', [
                 'formConnect' => $form->createView(),
                 'mail' => '',
+                'mailPro' => '',
                 'erreur' => ''
             ]);
         }

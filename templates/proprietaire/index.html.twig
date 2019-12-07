@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion Propriétaire{% endblock %}
+
+{% block body %}
+    <!-- ##### Breadcumb Area Start ##### -->
+    <section class="breadcumb-area bg-img" style="background-image: url(/img/bg-img/hero1.jpg);">
+        <div class="container h-100">
+            <div class="row h-100 align-items-center">
+                <div class="col-12">
+                    <div class="breadcumb-content">
+                        <h3 class="breadcumb-title">Connexion Propriétaire</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ##### Breadcumb Area End ##### -->
+
+    <section class="south-contact-area section-padding-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="contact-heading">
+                        <center><h6 style="font-size: 25px;">Identifiez-vous</h6></center>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Contact Form Area -->
+                <div class="col-12 col-lg-8" style="margin: 0 auto; width: 80%; ">
+                    <div class="contact-form">
+                        {{ form_start(formConnect) }}
+                            <div class="form-group">
+                                {{ form_widget(formConnect.mailproprietaire) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_widget(formConnect.mdpproprietaire) }}
+                            </div>
+                            <div class="form-group">
+                                <center>{{ form_widget(formConnect.valider) }}</center>
+                            </div>
+                            <div class="form-group" style="color: red;">
+                            <br><br>
+                                <center>{{ erreur }}</center>
+                            </div>
+                        {{ form_end(formConnect) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

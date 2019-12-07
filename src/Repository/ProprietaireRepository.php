@@ -47,4 +47,37 @@ class ProprietaireRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function verifProprietaire($mail,$mdp): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT count(p.mailproprietaire)
+            FROM App\Entity\Proprietaire p
+            WHERE p.mailproprietaire = :mail
+            AND p.mdpproprietaire = :mdp'
+        )->setParameter('mail', $mail)
+         ->setParameter('mdp', $mdp);
+
+        // returns an array of Product objects
+        return $query->getResult();
+    }
+
+    public function getLocations($mail): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            "SELECT l.datearrivee, l.datedepart, l.prix, b.adressebien, l.id
+            FROM App\Entity\Proprietaire p, App\Entity\Bien b, App\Entity\Louer l
+            WHERE p.id = b.proprietaire
+            AND b.id = l.bien
+            AND l.status = 'En attente'
+            AND p.mailproprietaire = :mail"
+        )->setParameter('mail', $mail);
+
+        // returns an array of Product objects
+        return $query->getResult();
+    }
 }

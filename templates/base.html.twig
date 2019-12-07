@@ -65,13 +65,20 @@
                         <!-- Nav Start -->
                         <div class="classynav">
                             <ul>
+                            {% if not mailPro %}
+                            
                                 <li><a href="/">Accueil</a></li>
                                 {% if not mail %}<li><a href="{{ path('connexion') }}">Connexion</a></li>{% endif %}
                                 {% if not mail %}<li><a href="{{ path('inscription') }}">Inscription</a></li>{% endif %}
-                                <li><a href="/apropos">A propos</a></li>
-                                <li><a href="/contact">Contact</a></li>
+                                {% if not mail %}<li><a href="{{ path('proprietaire') }}">Espace propriétaire</a></li>{% endif %}
                                 {% if mail %}<li><a href="{{ path('profil') }}">Profil</a></li>{% endif %}
-                                {% if mail %}<li><a href="accueil/deconnexion">Déconnexion</a></li>{% endif %}
+                                <li><a href="{{ path('apropos') }}">A propos</a></li>
+                                {% if mail %}<li><a href="{{ path('deconnexion') }}">Déconnexion</a></li>{% endif %}
+                            {% elseif mailPro %}
+                            <li><a href="{{ path('deconnexion') }}">Déconnexion</a></li>
+                            {% endif %}
+                            
+                                
                             </ul>
                         </div>
                         <!-- Nav End -->
