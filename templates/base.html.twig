@@ -70,6 +70,7 @@
                                 {% if not mail %}<li><a href="{{ path('inscription') }}">Inscription</a></li>{% endif %}
                                 <li><a href="/apropos">A propos</a></li>
                                 <li><a href="/contact">Contact</a></li>
+                                {% if mail %}<li><a href="{{ path('profil') }}">Profil</a></li>{% endif %}
                                 {% if mail %}<li><a href="accueil/deconnexion">Déconnexion</a></li>{% endif %}
                             </ul>
                         </div>

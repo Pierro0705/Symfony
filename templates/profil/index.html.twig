@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil{% endblock %}
+
+{% block body %}
+    <!-- ##### Breadcumb Area Start ##### -->
+    <section class="breadcumb-area bg-img" style="background-image: url(img/bg-img/loft2.jpg);">
+        <div class="container h-100">
+            <div class="row h-100 align-items-center">
+                <div class="col-12">
+                    <div class="breadcumb-content">
+                        <h3 class="breadcumb-title">Profil</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ##### Breadcumb Area End ##### -->
+
+            <section class="south-contact-area section-padding-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="contact-heading">
+                        <center><h6 style="font-size: 25px;">Modifiez votre compte</h6></center>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Contact Form Area -->
+                <div class="col-12 col-lg-8" style="margin: 0 auto; width: 80%; ">
+                    <div class="contact-form">
+                        {{ form_start(formUpdate) }}
+                            <div class="form-group">
+                                {{ form_widget(formUpdate.nom) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_widget(formUpdate.prenom) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_widget(formUpdate.mdp) }}
+                            </div>
+                            <div class="form-group">
+                                <center>{{ form_widget(formUpdate.valider) }}</center>
+                            </div>
+                        {{ form_end(formUpdate) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="south-contact-area section-padding-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="contact-heading">
+                        <center><h6 style="font-size: 25px;">Historique de location</h6></center>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Contact Form Area -->
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Numéro du bien</th>
+                        <th scope="col">Date d'arrivée</th>
+                        <th scope="col">Date de départ</th>
+                        <th scope="col">Prix payé</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% set nb = 0 %}
+                        {% for location in locations %}
+                        {% set nb = nb + 1 %}
+                        <tr>
+                        <th scope="row">{{ nb }}</th>
+                        <td>{{ location.bien.id }}</td>
+                        <td>{{ location.dateArrivee }}</td>
+                        <td>{{ location.dateDepart }}</td>
+                        <td>{{ location.prix }} €</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>        
+    
+{% endblock %}

@@ -36,17 +36,17 @@ class ClientRepository extends ServiceEntityRepository
     }
     */
 
-    /*
-    public function findOneBySomeField($value): ?Client
+    
+    public function findOneBySomeField($mail): ?Client
     {
         return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
+            ->andWhere('c.mail = :mail')
+            ->setParameter('mail', $mail)
             ->getQuery()
             ->getOneOrNullResult()
         ;
     }
-    */
+    
 
     public function verifClient($mail,$mdp): array
     {
@@ -62,5 +62,19 @@ class ClientRepository extends ServiceEntityRepository
 
         // returns an array of Product objects
         return $query->getResult();
+    }
+
+    public function getIdClientByMail($mail)
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT c.id
+            FROM App\Entity\Client c
+            WHERE c.mail = :mail'
+        )->setParameter('mail', $mail);
+
+        // returns an array of Product objects
+        return $query->getSingleScalarResult();
     }
 }

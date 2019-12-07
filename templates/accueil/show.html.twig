@@ -59,19 +59,15 @@
                                     <div class="range">Date de départ :</div>
                                     {{ form_widget(formValider.dateDepart) }}
                                 </div>
+
+                                {{ form_widget(formValider._token) }}
                             
 
                             <!-- Listings Btn Groups -->
                             <div class="listings-btn-groups">
                                 <center>{{ form_widget(formValider.valider) }} </center>
                             </div>
-
-                        {{ form_end(formValider) }}
-
-                        <div class="form-group" style="color: red;">
-                            <br><br>
-                            <center>{{ erreur }}</center>
-                        </div>
+                        {{ erreur }}
                     </div>
                 </div>
             </div>

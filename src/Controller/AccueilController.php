@@ -7,9 +7,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 use App\Entity\Bien;
+use App\Entity\Louer;
+use App\Entity\Client;
 
 use Doctrine\ORM\EntityManagerInterface;
-
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -26,7 +27,7 @@ class AccueilController extends AbstractController
     /**
      * @Route("/", name="accueil")
      */
-    public function index(Request $request, EntityManagerInterface $manager)
+    public function index(Request $request)
     {
         
         $maSession = $this->session->get('mail');
@@ -149,14 +150,13 @@ class AccueilController extends AbstractController
 
         $bien = $repo->findBienById($id);
 
-        $form = $this->createFormBuilder()
-       ->add('dateArrivee' , DateType::class, [
+        $formF = $this->createFormBuilder()
+        ->add('dateArrivee' , DateType::class, [
            'widget' => 'single_text',
            'input'  => 'string',
            'attr' => [
                'class' => 'form-control',
                'min' => date('Y-m-d')
-               
            ]
        ])
        ->add('dateDepart' , DateType::class,  [
@@ -172,20 +172,20 @@ class AccueilController extends AbstractController
         'attr' => [
             'placeholder' => 'denis',
             'class' => 'btn south-btn'
-        ]
-    ])
+            ]
+        ])
         ->getForm();
 
-        $form->handleRequest($request);
+        $formF->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid())
+        if($formF->isSubmitted() && $formF->isValid())
         {
-            $data = $form->getData();
+            $data = $formF->getData();
 
             if ($data['dateDepart'] < $data['dateArrivee'])
             {
                 return $this->render('accueil/show.html.twig', [
-                    'formValider' => $form->createView(),
+                    'formValider' => $formF->createView(),
                     'resultats' => $bien,
                     'mail' => $maSession,
                     'erreur' => 'Les dates ne sont pas cohérentes'
@@ -199,7 +199,39 @@ class AccueilController extends AbstractController
                 }
                 else
                 {
-                    echo "debout";
+                    $verifDispo = $repo->verifDispo($data['dateArrivee'],$data['dateDepart'],$id);
+
+                    if ($verifDispo[0][1] == 0)
+                    {
+                        return $this->render('accueil/show.html.twig', [
+                            'formValider' => $formF->createView(),
+                            'resultats' => $bien,
+                            'mail' => $maSession,
+                            'erreur' => 'Cette location est déja louée à ces dates, veuillez les changer'
+                        ]);
+                    }
+                    else if ($verifDispo[0][1] == 1) 
+                    {
+                        $repoClient = $this->getDoctrine()->getRepository(Client::class);
+
+                        $monBien = $repo->findOneBySomeField($id);
+                        $monClient = $repoClient->findOnebySomeField($maSession);
+                        $reqPrix = $repo->prixTotal($id,$data['dateArrivee'],$data['dateDepart']);
+                        $prixTotal = (int) $reqPrix[0]['prixtotal'];
+
+                        $location = new Louer();
+
+                        $location->setBien($monBien)
+                                 ->setClient($monClient)
+                                 ->setDatearrivee($data['dateArrivee'])
+                                 ->setDatedepart($data['dateDepart'])
+                                 ->setPrix($prixTotal);
+                                 
+
+                        $this->session->set('location',$location);
+                        
+                        return $this->redirectToRoute('paiement');
+                    }
                 }
             }
         }
@@ -211,7 +243,7 @@ class AccueilController extends AbstractController
         else
         {
             return $this->render('accueil/show.html.twig', [
-                'formValider' => $form->createView(),
+                'formValider' => $formF->createView(),
                 'resultats' => $bien,
                 'mail' => $maSession,
                 'erreur' => ''

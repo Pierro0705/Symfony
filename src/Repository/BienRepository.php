@@ -36,17 +36,53 @@ class BienRepository extends ServiceEntityRepository
     }
     */
 
-    /*
-    public function findOneBySomeField($value): ?Bien
+    public function prixTotal($id,$dateArrivee,$dateDepart)
+    {
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery(
+            "SELECT DATEDIFF(:dateDepart,:dateArrivee) * b.prixparnuit as prixtotal
+            FROM App\Entity\Bien b
+            WHERE b.id = :id
+            "
+        )->setParameter('dateArrivee',$dateArrivee)
+         ->setParameter('dateDepart',$dateDepart)
+         ->setParameter('id',$id);
+
+        return $query->getResult();
+    }
+
+    
+    public function findOneBySomeField($id): ?Bien
     {
         return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
-            ->setParameter('val', $value)
+            ->andWhere('b.id = :id')
+            ->setParameter('id', $id)
             ->getQuery()
             ->getOneOrNullResult()
         ;
     }
-    */
+    
+
+    public function verifDispo($dateArrivee,$dateDepart,$id)
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            "SELECT count(b.id)
+            FROM App\Entity\Bien b
+            LEFT JOIN b.louers l
+                WITH l.datearrivee <= :dateDepart 
+                AND l.datedepart >= :dateArrivee
+            WHERE l.bien is null
+            AND b.id = :id
+            "
+        )->setParameter('dateArrivee',$dateArrivee)
+         ->setParameter('dateDepart',$dateDepart)
+         ->setParameter('id',$id);
+
+        
+        return $query->getResult();
+    }
 
     public function rechercheBien($ville,$nbPlaces,$superficieMin,$superficieMax,$typeBien,$dateArrivee,$dateDepart): array
     {
@@ -57,15 +93,15 @@ class BienRepository extends ServiceEntityRepository
             FROM App\Entity\Bien b
             INNER JOIN b.ville v
             INNER JOIN b.typebien tb
-            LEFT JOIN b.louers l
-            WHERE tb.libelle = :typebien
-            AND ((:dateArrivee < l.datearrivee AND :dateDepart < l.datearrivee) OR (:dateArrivee > l.datearrivee AND :dateDepart > l.datedepart))
-            OR l.id IS NULL
-            AND b.nbplaces >= :nbPlaces
-            AND b.ville = v.id
-            AND v.nomville like '%" . $ville . "%'
-            AND b.superficiebien BETWEEN :superficieMin AND :superficieMax
-    "
+            LEFT JOIN b.louers l 
+                WITH l.datearrivee <= :dateDepart 
+                AND l.datedepart >= :dateArrivee
+            WHERE l.bien is null
+                AND tb.libelle = :typebien
+                AND b.nbplaces >= :nbPlaces
+                AND v.nomville like '%" . $ville . "%'
+                AND b.superficiebien BETWEEN :superficieMin AND :superficieMax
+            "
         )->setParameter('typebien',$typeBien)
          ->setParameter('dateArrivee',$dateArrivee)
          ->setParameter('dateDepart',$dateDepart)
@@ -92,6 +128,7 @@ class BienRepository extends ServiceEntityRepository
 
         return $query->getResult();
     }
+
     
     public function bienRandom(): array
     {
