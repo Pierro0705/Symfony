@@ -27,7 +27,7 @@
             <div class="row">
                 <!-- Contact Form Area -->
                 <table class="table">
-                    <thead class="thead-dark">
+                    <thead class="thead-light">
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Adresse du bien</th>
@@ -47,7 +47,7 @@
                             <td>{{ location.datearrivee }}</td>
                             <td>{{ location.datedepart }}</td>
                             <td>{{ location.prix }} €</td>
-                            <td><button onclick="window.location='{{ path('espaceproprietaireid', {'id': location.id, 'action': 'accept'}) }}';" type="button" style="padding: 4px 20px;" class="btn btn-success">Accepter</button>&nbsp;<button onclick="window.location='{{ path('espaceproprietaireid', {'id': location.id, 'action': 'refuse'}) }}';" style="padding: 4px 20px;" type="button" class="btn btn-danger">Refuser</button></td>
+                            <td><button onclick="window.location='{{ path('espaceproprietaireid', {'id': location.id, 'action': 'accept'}) }}';" type="button" style="padding: 4px 16px;" class="btn btn-outline-success">Accepter</button>&nbsp;<button onclick="window.location='{{ path('espaceproprietaireid', {'id': location.id, 'action': 'refuse'}) }}';" style="padding: 4px 16px;" type="button" class="btn btn-outline-danger">Refuser</button></td>
                         </tr>
                         
                     {% endfor %}
